@@ -7,22 +7,15 @@ import { Skeleton } from "./ui/skeleton";
 import MessageFormMessagePersistence from "./message-form-message-persistence";
 
 interface ChatbotProps {
-  invoke: (message: string) => Promise<string[]>;
+  invoke: (message: string, threadId: string) => Promise<string>;
 }
 
 const ChatbotMessagePersistence = ({ invoke }: ChatbotProps) => {
   const [answers, setAnswers] = useState<string[]>();
-  const [input, setInput] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <div className="w-full flex flex-col gap-4">
-      {input && !answers && (
-        <Card className="p-4 bg-slate-200 max-w-5/6 self-end">
-          <Markdown>{input}</Markdown>
-        </Card>
-      )}
-      {loading && <Skeleton className="h-14 w-96 max-w-[50%]" />}
       {answers &&
         answers.map((a, i) => (
           <Card
@@ -36,10 +29,10 @@ const ChatbotMessagePersistence = ({ invoke }: ChatbotProps) => {
             <Markdown>{a}</Markdown>
           </Card>
         ))}
+      {loading && <Skeleton className="h-14 w-96 max-w-[50%]" />}
       <MessageFormMessagePersistence
         invoke={invoke}
         setAnswers={setAnswers}
-        setInput={setInput}
         setLoading={setLoading}
       />
     </div>

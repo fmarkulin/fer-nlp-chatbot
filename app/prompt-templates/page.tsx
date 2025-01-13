@@ -6,16 +6,26 @@ import {
   StateGraph,
   MemorySaver,
 } from "@langchain/langgraph";
-import ChatbotMessagePersistence from "@/components/chatbot-message-persistence";
+import ChatbotPromptTemplates from "@/components/chatbot-prompt-templates";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 
 const llm = new ChatMistralAI({
   model: "mistral-large-latest",
   temperature: 0,
 });
 
+const promptTemplate = ChatPromptTemplate.fromMessages([
+  [
+    "system",
+    "Pričaj mi samo na Hrvatskom jeziku. Svaki odgovor završi s kratkim vicom.",
+  ],
+  ["placeholder", "{messages}"],
+]);
+
 const callModel = async (state: typeof MessagesAnnotation.State) => {
-  const response = await llm.invoke(state.messages);
-  return { messages: response };
+  const prompt = await promptTemplate.invoke(state);
+  const response = await llm.invoke(prompt);
+  return { messages: [response] };
 };
 
 const workflow = new StateGraph(MessagesAnnotation)
@@ -43,7 +53,7 @@ const invokeFn = async (message: string, threadId: string) => {
 export default function Home() {
   return (
     <div className="p-8 flex flex-col items-center justify-center mx-auto max-w-7xl">
-      <ChatbotMessagePersistence invoke={invokeFn} />
+      <ChatbotPromptTemplates invoke={invokeFn} />
     </div>
   );
 }

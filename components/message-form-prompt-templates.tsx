@@ -19,7 +19,7 @@ interface MessageFormProps {
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-const MessageFormMessagePersistence = ({
+const MessageFormPromptTemplates = ({
   invoke,
   setAnswers,
   setLoading,
@@ -95,4 +95,4 @@ const MessageFormMessagePersistence = ({
   );
 };
 
-export default MessageFormMessagePersistence;
+export default MessageFormPromptTemplates;

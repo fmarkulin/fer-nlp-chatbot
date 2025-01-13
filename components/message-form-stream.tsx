@@ -14,17 +14,23 @@ const schema = z.object({
 });
 
 interface MessageFormProps {
-  invoke: (message: string, threadId: string) => Promise<string>;
+  invoke: (
+    message: string,
+    threadId: string
+  ) => AsyncGenerator<string, void, unknown>;
   setAnswers: Dispatch<SetStateAction<string[] | undefined>>;
+  setNewAnswer: Dispatch<SetStateAction<string | undefined>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-const MessageFormMessagePersistence = ({
+const MessageFormStream = ({
   invoke,
   setAnswers,
+  setNewAnswer,
   setLoading,
 }: MessageFormProps) => {
   const [threadId, setThreadId] = useState<string>(uuidv4());
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   const handleThreadIdReset = () => {
     setThreadId(uuidv4());
@@ -39,6 +45,7 @@ const MessageFormMessagePersistence = ({
   });
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
+    setDisabled(true);
     setAnswers((prev) => {
       if (prev) {
         return [...prev, data.message];
@@ -48,20 +55,30 @@ const MessageFormMessagePersistence = ({
     form.reset();
     setLoading(true);
     try {
-      const invokePromise = invoke(data.message, threadId);
-      const response = await invokePromise;
-      console.log("response", response);
-      setLoading(false);
-      setAnswers((p) => {
-        if (p) {
-          return [...p, response];
+      const invokeGen = invoke(data.message, threadId);
+      let newAnswer = "";
+      for await (const chunk of await invokeGen) {
+        setLoading(false);
+        setNewAnswer((prev) => {
+          if (!prev) return chunk;
+          return prev.concat(chunk);
+        });
+        newAnswer = newAnswer.concat(chunk);
+      }
+      setAnswers((prev) => {
+        if (prev) {
+          return [...prev, newAnswer];
         }
-        return [response];
+        return [newAnswer];
       });
+      setNewAnswer(undefined);
+      setDisabled(false);
     } catch (err) {
       console.error(err);
       setLoading(false);
       setAnswers(["Greška pri dohvaćanju odgovora"]);
+      setNewAnswer(undefined);
+      setDisabled(false);
     }
   };
 
@@ -81,11 +98,14 @@ const MessageFormMessagePersistence = ({
           )}
         />
         <div className="flex gap-2">
-          <Button type="submit">Pošalji</Button>
+          <Button type="submit" disabled={disabled}>
+            Pošalji
+          </Button>
           <Button
             type="button"
             onClick={handleThreadIdReset}
             variant={"destructive"}
+            disabled={disabled}
           >
             Poništi razgovor
           </Button>
@@ -95,4 +115,4 @@ const MessageFormMessagePersistence = ({
   );
 };
 
-export default MessageFormMessagePersistence;
+export default MessageFormStream;

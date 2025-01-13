@@ -6,16 +6,40 @@ import {
   StateGraph,
   MemorySaver,
 } from "@langchain/langgraph";
-import ChatbotMessagePersistence from "@/components/chatbot-message-persistence";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { trimMessages } from "@langchain/core/messages";
+import ChatbotManageHistory from "@/components/chatbot-manage-history";
+
+const trimmer = trimMessages({
+  maxTokens: 6,
+  strategy: "last",
+  tokenCounter: (msgs) => msgs.length,
+  includeSystem: true,
+  allowPartial: false,
+  startOn: "human",
+});
 
 const llm = new ChatMistralAI({
   model: "mistral-large-latest",
   temperature: 0,
 });
 
+const promptTemplate = ChatPromptTemplate.fromMessages([
+  [
+    "system",
+    "Pričaj mi samo na Hrvatskom jeziku. Svaki odgovor završi s kratkim vicom.",
+  ],
+  ["placeholder", "{messages}"],
+]);
+
 const callModel = async (state: typeof MessagesAnnotation.State) => {
-  const response = await llm.invoke(state.messages);
-  return { messages: response };
+  const trimmed = await trimmer.invoke(state.messages);
+  const prompt = await promptTemplate.invoke({
+    ...state,
+    messages: trimmed,
+  });
+  const response = await llm.invoke(prompt);
+  return { messages: [response] };
 };
 
 const workflow = new StateGraph(MessagesAnnotation)
@@ -42,8 +66,8 @@ const invokeFn = async (message: string, threadId: string) => {
 
 export default function Home() {
   return (
-    <div className="p-8 flex flex-col items-center justify-center mx-auto max-w-7xl">
-      <ChatbotMessagePersistence invoke={invokeFn} />
+    <div className="p-8 h-screen flex flex-col items-center mx-auto max-w-7xl">
+      <ChatbotManageHistory invoke={invokeFn} />
     </div>
   );
 }
