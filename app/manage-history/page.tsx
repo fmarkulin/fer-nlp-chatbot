@@ -65,9 +65,5 @@ const invokeFn = async (message: string, threadId: string) => {
 };
 
 export default function Home() {
-  return (
-    <div className="p-8 h-screen flex flex-col items-center mx-auto max-w-7xl">
-      <ChatbotManageHistory invoke={invokeFn} />
-    </div>
-  );
+  return <ChatbotManageHistory invoke={invokeFn} />;
 }

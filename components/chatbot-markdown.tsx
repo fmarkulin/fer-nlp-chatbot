@@ -6,7 +6,6 @@ import MessageForm from "./message-form";
 import { useState } from "react";
 import { Card } from "./ui/card";
 import Markdown from "react-markdown";
-import { Skeleton } from "./ui/skeleton";
 
 interface ChatbotProps {
   invoke: (
@@ -27,7 +26,11 @@ const ChatbotMarkdown = ({ invoke }: ChatbotProps) => {
           <Markdown>{input}</Markdown>
         </Card>
       )}
-      {loading && <Skeleton className="h-14 w-96 max-w-[50%]" />}
+      {loading && (
+        <Card className="p-4 bg-orange-500 text-white self-start max-w-[90%]">
+          <span className="animate-ping h-2 inline-flex w-2 rounded-full bg-white"></span>
+        </Card>
+      )}
       {answer && (
         <Card className="p-4 bg-orange-500 text-white w-5/6 self-start">
           <Markdown>{answer}</Markdown>

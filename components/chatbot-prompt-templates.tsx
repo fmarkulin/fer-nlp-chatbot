@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Card } from "./ui/card";
 import Markdown from "react-markdown";
-import { Skeleton } from "./ui/skeleton";
 import MessageFormPromptTemplates from "./message-form-prompt-templates";
 
 interface ChatbotProps {
@@ -15,7 +14,7 @@ const ChatbotPromptTemplates = ({ invoke }: ChatbotProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   return (
-    <div className="w-full flex flex-col gap-4 justify-between h-full">
+    <div className="w-full min-h-screen p-8 flex flex-col gap-4 justify-between">
       <div className="flex flex-col gap-4">
         {answers &&
           answers.map((a, i) => (
@@ -30,7 +29,11 @@ const ChatbotPromptTemplates = ({ invoke }: ChatbotProps) => {
               <Markdown>{a}</Markdown>
             </Card>
           ))}
-        {loading && <Skeleton className="h-14 w-96 max-w-[50%]" />}
+        {loading && (
+          <Card className="p-4 bg-orange-500 text-white self-start max-w-[90%]">
+            <span className="animate-ping h-2 inline-flex w-2 rounded-full bg-white"></span>
+          </Card>
+        )}
       </div>
       <MessageFormPromptTemplates
         invoke={invoke}

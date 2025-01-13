@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Card } from "./ui/card";
 import Markdown from "react-markdown";
-import { Skeleton } from "./ui/skeleton";
 import MessageFormMessagePersistence from "./message-form-message-persistence";
 
 interface ChatbotProps {
@@ -15,21 +14,27 @@ const ChatbotMessagePersistence = ({ invoke }: ChatbotProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      {answers &&
-        answers.map((a, i) => (
-          <Card
-            key={i}
-            className={`p-4 ${
-              i % 2 === 0
-                ? "bg-slate-200 self-end"
-                : "bg-orange-500 text-white self-start"
-            } max-w-[90%]`}
-          >
-            <Markdown>{a}</Markdown>
+    <div className="w-full min-h-screen p-8 flex flex-col gap-4 justify-between">
+      <div className="flex flex-col gap-4">
+        {answers &&
+          answers.map((a, i) => (
+            <Card
+              key={i}
+              className={`p-4 ${
+                i % 2 === 0
+                  ? "bg-slate-200 self-end"
+                  : "bg-orange-500 text-white self-start"
+              } max-w-[90%]`}
+            >
+              <Markdown>{a}</Markdown>
+            </Card>
+          ))}
+        {loading && (
+          <Card className="p-4 bg-orange-500 text-white self-start max-w-[90%]">
+            <span className="animate-ping h-2 inline-flex w-2 rounded-full bg-white"></span>
           </Card>
-        ))}
-      {loading && <Skeleton className="h-14 w-96 max-w-[50%]" />}
+        )}
+      </div>
       <MessageFormMessagePersistence
         invoke={invoke}
         setAnswers={setAnswers}

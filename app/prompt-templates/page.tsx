@@ -51,9 +51,5 @@ const invokeFn = async (message: string, threadId: string) => {
 };
 
 export default function Home() {
-  return (
-    <div className="p-8 flex flex-col items-center justify-center mx-auto max-w-7xl">
-      <ChatbotPromptTemplates invoke={invokeFn} />
-    </div>
-  );
+  return <ChatbotPromptTemplates invoke={invokeFn} />;
 }

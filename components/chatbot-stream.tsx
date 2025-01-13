@@ -18,7 +18,7 @@ const ChatbotStream = ({ invoke }: ChatbotProps) => {
   const [newAnswer, setNewAnswer] = useState<string>();
 
   return (
-    <div className="w-full flex flex-col gap-4 justify-between h-full">
+    <div className="w-full min-h-screen p-8 flex flex-col gap-4 justify-between">
       <div className="flex flex-col gap-4">
         {answers &&
           answers.map((a, i) => (
