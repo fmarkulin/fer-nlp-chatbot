@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NLP-FER-CHATBOT
 
-## Getting Started
+Za potrebe predmeta **Obrada prirodnog jezika** na **FER**-u u Zagrebu izrađena je web-aplikacija koja postepeno prikazuje mogućnosti i dobre prakse izrade _chatbotova_ koristeći razvojni okvir [LangChain](https://js.langchain.com/docs/introduction/).
 
-First, run the development server:
+Za izradu aplikacije korišten je razvojni okvir [Next.js](https://nextjs.org/).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Dostupne rute
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `/no-markdown` - interakcija s modelom bez podrške za oblikovanje u formatu _Markdown_
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `/markdown` - interakcija s modelom s podrškom za oblikovanje u formatu _Markdown_
+- `/message-persistence` - interakcija s modelom s perzistencijom razgovora - više poruka, pamćenje
+- `/prompt-templates` - interakcija s modelom uz korištenje upitnih predložaka razvojnog okvira _LangChain_
+- `/manage-history` - interakcija s modelom uz upravljanje poviješću razgovora
+- `/stream` - interakcija s modelom u obliku toka - odgovor pristiže kako ga model generira
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Svaka ruta sadrži značajke prethodne rute**
 
-## Learn More
+## Postavljanje
 
-To learn more about Next.js, take a look at the following resources:
+1. klonirati projekt
+2. generirati svoj API ključ za **Mistral AI**
+3. postaviti varijablu okruženja `MISTRAL_API_KEY=generirani-ključ`
+4. instalirati potrebne pakete - npr. `npm i`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Pokretanje
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+za potrebe razvoja koristiti `npm run dev`
 
-## Deploy on Vercel
+za potrebe korištenja i istraživanja koristiti:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. `npm run build` - izgradnja aplikacije
+2. `npm run start` - pokretanje izgrađene aplikacije

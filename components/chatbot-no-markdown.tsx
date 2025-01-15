@@ -19,20 +19,22 @@ const ChatbotNoMarkdown = ({ invoke }: ChatbotProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      {input && (
-        <Card className="p-4 bg-slate-200 max-w-5/6 self-end">{input}</Card>
-      )}
-      {loading && (
-        <Card className="p-4 bg-orange-500 text-white self-start max-w-[90%]">
-          <span className="animate-ping h-2 inline-flex w-2 rounded-full bg-white"></span>
-        </Card>
-      )}
-      {answer && (
-        <Card className="p-4 bg-orange-500 text-white w-5/6 self-start">
-          {answer}
-        </Card>
-      )}
+    <div className="w-full flex flex-col gap-4 flex-grow p-8 justify-between">
+      <div className="flex flex-col gap-4">
+        {input && (
+          <Card className="p-4 bg-slate-200 max-w-[90%] self-end">{input}</Card>
+        )}
+        {loading && (
+          <Card className="p-4 bg-orange-500 text-white self-start max-w-[90%]">
+            <span className="animate-ping h-2 inline-flex w-2 rounded-full bg-white"></span>
+          </Card>
+        )}
+        {answer && (
+          <Card className="p-4 bg-orange-500 text-white max-w-[90%] self-start">
+            {answer}
+          </Card>
+        )}
+      </div>
       <MessageForm
         invoke={invoke}
         setAnswer={setAnswer}

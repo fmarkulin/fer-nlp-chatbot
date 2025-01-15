@@ -14,7 +14,7 @@ const ChatbotPromptTemplates = ({ invoke }: ChatbotProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   return (
-    <div className="w-full min-h-screen p-8 flex flex-col gap-4 justify-between">
+    <div className="w-full flex-grow p-8 flex flex-col gap-4 justify-between">
       <div className="flex flex-col gap-4">
         {answers &&
           answers.map((a, i) => (

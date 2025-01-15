@@ -15,9 +15,5 @@ const invokeFn = async (input: BaseLanguageModelInput) => {
 };
 
 export default function Home() {
-  return (
-    <div className="p-8 flex flex-col items-center justify-center mx-auto max-w-7xl">
-      <ChatbotMarkdown invoke={invokeFn} />
-    </div>
-  );
+  return <ChatbotMarkdown invoke={invokeFn} />;
 }

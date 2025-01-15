@@ -41,6 +41,7 @@ const MessageForm = ({
     setAnswer(undefined);
     setInput(data.message);
     setLoading(true);
+    form.reset();
     try {
       const invokePromise = invoke(data.message);
       // toast.promise(invokePromise, {
@@ -52,7 +53,6 @@ const MessageForm = ({
       console.log("response", response);
       setLoading(false);
       setAnswer(response);
-      form.reset();
     } catch (err) {
       console.error(err);
       setLoading(false);
