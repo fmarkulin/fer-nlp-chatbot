@@ -34,6 +34,7 @@ await vectorStore.addDocuments(allSplits);
 const promptTemplate = await pull<ChatPromptTemplate>("rlm/rag-prompt");
 
 // Define state for application
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const InputStateAnnotation = Annotation.Root({
   question: Annotation<string>,
 });
