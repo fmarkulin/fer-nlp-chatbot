@@ -1,16 +1,12 @@
 "use client";
 
 import { BaseLanguageModelInput } from "@langchain/core/language_models/base";
-import { ChatMistralAICallOptions } from "@langchain/mistralai";
 import MessageForm from "./message-form";
 import { useState } from "react";
 import { Card } from "./ui/card";
 
 interface ChatbotProps {
-  invoke: (
-    input: BaseLanguageModelInput,
-    options?: ChatMistralAICallOptions | undefined
-  ) => Promise<string>;
+  invoke: (input: BaseLanguageModelInput) => Promise<string>;
 }
 
 const ChatbotNoMarkdown = ({ invoke }: ChatbotProps) => {

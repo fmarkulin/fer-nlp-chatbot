@@ -17,7 +17,7 @@ const schema = z.object({
 interface MessageFormProps {
   invoke: (
     input: BaseLanguageModelInput,
-    options?: ChatMistralAICallOptions | undefined
+    options?: ChatMistralAICallOptions | undefined,
   ) => Promise<string>;
   setAnswer: Dispatch<SetStateAction<string | undefined>>;
   setInput: Dispatch<SetStateAction<string | undefined>>;
@@ -44,11 +44,6 @@ const MessageForm = ({
     form.reset();
     try {
       const invokePromise = invoke(data.message);
-      // toast.promise(invokePromise, {
-      //   loading: "Računam...",
-      //   success: "Uspješno!",
-      //   error: "Greška!",
-      // });
       const response = await invokePromise;
       console.log("response", response);
       setLoading(false);
